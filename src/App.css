@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f4f8;
+}
+
+#root {
+  height: 100%;
+}
+
+.app-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-mulai {
+  padding: 14px 48px;
+  font-size: 18px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-mulai:hover {
+  background-color: #3730a3;
+}
+
+.profile-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.pfp-box {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #4f46e5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.pfp-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.biodata-box {
+  background: white;
+  border-radius: 16px;
+  padding: 24px 32px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.Biodata-Item {
+  display: flex;
+  gap: 12px;
+  font-size: 15px;
+}
+
+.label {
+  font-weight: 600;
+  color: #4f46e5;
+  min-width: 80px;
+}
+
+.value {
+  color: #374151;
+}
+
+.btn-kembali {
+  padding: 10px 32px;
+  font-size: 15px;
+  background-color: #e5e7eb;
+  color: #374151;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-kembali:hover {
+  background-color: #d1d5db;
+}
