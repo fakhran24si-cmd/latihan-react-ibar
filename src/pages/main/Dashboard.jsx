@@ -90,6 +90,65 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
+      {/* ROOM CATEGORIES SECTION */}
+      <div className="mt-12">
+        <h2 className="text-3xl font-serif font-bold text-[#0B0F19] mb-1">
+          Room Categories
+        </h2>
+        <p className="text-slate-500 italic font-serif text-sm mb-6">
+          Explore our premium accommodation tiers and availability.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              name: "Deluxe Room",
+              price: "2.5M",
+              badge: "STANDARD",
+              img: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=500",
+            },
+            {
+              name: "Suite Room",
+              price: "5.2M",
+              badge: "POPULAR",
+              img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500",
+            },
+            {
+              name: "Presidential Suite",
+              price: "12.8M",
+              badge: "ELITE",
+              img: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500",
+            },
+          ].map((room, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden group"
+            >
+              <img
+                src={room.img}
+                className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-lg font-serif font-bold">{room.name}</h3>
+                  <span className="text-[9px] bg-slate-50 px-2 py-1 rounded font-bold">
+                    {room.badge}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 mb-4 font-serif italic">
+                  Refined comfort with premium amenities...
+                </p>
+                <div className="flex justify-between items-end border-t pt-4">
+                  <span className="text-xs text-slate-400">
+                    Rp {room.price}{" "}
+                    <span className="italic font-serif">/night</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

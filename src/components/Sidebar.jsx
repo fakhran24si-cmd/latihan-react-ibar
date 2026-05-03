@@ -17,32 +17,56 @@ export default function Sidebar() {
     }`;
 
   return (
-    <div className="w-64 bg-white h-screen border-r p-4 flex flex-col shadow-sm">
-      {/* Area Logo - Ikon MdBedroomChild berada di dalam div logo[cite: 7] */}
-      <div className="text-2xl font-bold text-indigo-900 mb-8 px-4 flex items-center">
-        <MdBedroomChild className="mr-2 text-amber-500" /> Grand Stay
+    <div className="w-64 bg-[#0B0F19] h-screen sticky top-0 flex flex-col shadow-2xl z-50">
+      {/* Area Logo & Branding */}
+      <div className="p-8 pb-10">
+        <h2 className="text-3xl font-serif text-amber-500 italic tracking-wider">
+          Grand stay
+        </h2>
+        <p className="text-[10px] text-amber-600/80 font-bold uppercase tracking-[0.3em] mt-2">
+          Luxury Hotel
+        </p>
       </div>
 
-      <nav className="flex-1 space-y-2">
-        <NavLink to="/" className={menuClass}>
-          <MdDashboard className="mr-3 text-xl" /> Dashboard
-        </NavLink>
+      {/* Navigasi Menu */}
+      <nav className="flex-1 mt-4">
+        {[
+          { path: "/", label: "Dashboard", icon: <MdDashboard /> },
+          { path: "/orders", label: "Reservations", icon: <FaCalendarCheck /> },
+          { path: "/customers", label: "Guest List", icon: <FaUsers /> },
+        ].map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) =>
+              `flex items-center gap-4 py-4 px-8 transition-all duration-300 border-l-4 ${
+                isActive
+                  ? "border-amber-500 bg-slate-800/30 text-amber-500 font-bold"
+                  : "border-transparent text-slate-400 hover:text-slate-200"
+              }`
+            }
+          >
+            <span className="text-xl">{item.icon}</span>
+            <span className="text-sm tracking-wide">{item.label}</span>
+          </NavLink>
+        ))}
 
-        {/* Ikon FaCalendarCheck untuk Reservasi[cite: 7] */}
-        <NavLink to="/orders" className={menuClass}>
-          <FaCalendarCheck className="mr-3 text-lg" /> Reservations
-        </NavLink>
-
-        <NavLink to="/customers" className={menuClass}>
-          <FaUsers className="mr-3 text-lg" /> Guest List
-        </NavLink>
-
-        <div className="pt-4 pb-2 px-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+        {/* Label System Status */}
+        <div className="pt-8 pb-2 px-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
           System Status
         </div>
-
-        <NavLink to="/401" className={menuClass}>
-          <MdError className="mr-3 text-xl" /> Security Error
+        <NavLink
+          to="/401"
+          className={({ isActive }) =>
+            `flex items-center gap-4 py-4 px-8 border-l-4 ${
+              isActive
+                ? "border-red-500 text-red-500"
+                : "border-transparent text-slate-500"
+            }`
+          }
+        >
+          <MdError className="text-xl" />{" "}
+          <span className="text-sm">Security Error</span>
         </NavLink>
       </nav>
     </div>
