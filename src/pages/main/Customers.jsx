@@ -1,7 +1,10 @@
 import PageHeader from "../../components/PageHeader";
 import { FaUserPlus } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 export default function Customers() {
-  // Generate 30 data JSON otomatis sesuai atribut modul
+  const navigate = useNavigate();
+
   const customersData = Array.from({ length: 30 }, (_, i) => ({
     id: `CUST-00${i + 1}`,
     name: `Pelanggan Ke-${i + 1}`,
@@ -12,14 +15,12 @@ export default function Customers() {
 
   return (
     <div className="p-4">
-      {/* PageHeader dengan Props sesuai instruksi */}
       <PageHeader title="Customers" breadcrumb="Dashboard / Customer List">
         <button className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-xl">
           <FaUserPlus className="mr-2" /> Add Guest
         </button>
       </PageHeader>
 
-      {/* Tabel untuk menampilkan Data JSON */}
       <div className="mt-6 overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-sm">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -35,9 +36,11 @@ export default function Customers() {
             {customersData.map((item) => (
               <tr
                 key={item.id}
-                className="border-b border-gray-50 hover:bg-gray-50 transition-colors"
+                /* Gabungkan onClick di sini agar seluruh baris bisa diklik */
+                onClick={() => navigate(`/customers/${item.id}`)}
+                className="border-b border-gray-50 hover:bg-indigo-50 cursor-pointer transition-colors"
               >
-                <td className="p-4 text-sm font-medium text-gray-700">
+                <td className="p-4 text-sm font-medium text-indigo-600">
                   {item.id}
                 </td>
                 <td className="p-4 text-sm text-gray-600">{item.name}</td>

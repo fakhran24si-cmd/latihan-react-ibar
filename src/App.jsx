@@ -14,7 +14,8 @@ const NotFound = React.lazy(() => import("./pages/main/NotFound"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot = React.lazy(() => import("./pages/auth/Forgot"));
-
+const OrderDetail = React.lazy(() => import("./pages/main/OrderDetail"));
+const CustomerDetail = React.lazy(() => import("./pages/main/CustomerDetail"));
 function App() {
   return (
     // Suspense wajib ada jika menggunakan React.lazy
@@ -24,7 +25,9 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="orders/:id" element={<OrderDetail />} />
           <Route path="customers" element={<Customers />} />
+          <Route path="customers/:id" element={<CustomerDetail />} />
           <Route path="error" element={<ErrorPage />} />
           <Route
             path="400"
