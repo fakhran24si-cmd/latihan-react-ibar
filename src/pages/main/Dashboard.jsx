@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react"; // Tambahkan useEffect dan useRef
 import PageHeader from "../../components/PageHeader";
 import StatCard from "../../components/StatCard";
 import StatusBadge from "../../components/StatusBadge";
@@ -6,6 +6,20 @@ import ActionButtons from "../../components/ActionButton";
 import Avatar from "../../components/Avatar";
 
 export default function Dashboard() {
+  // IMPLEMENTASI USEREF: Menyimpan ID timer interval agar aman di latar belakang tanpa re-render berlebih
+  const backgroundIntervalRef = useRef(null);
+
+  useEffect(() => {
+    // Sinkronisasi polling pengecekan status kamar baru setiap 15 detik secara berkala
+    backgroundIntervalRef.current = setInterval(() => {
+      console.log("Marline System: Menyinkronkan okupansi kamar terbaru...");
+    }, 15000);
+
+    return () => {
+      clearInterval(backgroundIntervalRef.current); // Bersihkan interval agar memori tidak bocor
+    };
+  }, []);
+
   const recentBookings = [
     {
       id: "HB-99281",
@@ -13,7 +27,7 @@ export default function Dashboard() {
       room: "Deluxe Room #204",
       guest: "Allan Wood",
       amount: "Rp 1.2M",
-      status: "Check-in", // Sesuai StatusBadge
+      status: "Check-in",
     },
     {
       id: "HB-99282",

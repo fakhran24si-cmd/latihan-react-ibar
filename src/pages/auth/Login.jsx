@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Tambahkan useEffect
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BsFillExclamationDiamondFill } from "react-icons/bs";
@@ -9,13 +9,23 @@ export default function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State untuk toggle mata
+  const [showPassword, setShowPassword] = useState(false);
   const [dataForm, setDataForm] = useState({
-    email: "", // Tetap gunakan 'email' sebagai key sesuai logic lama Anda
+    email: "",
     password: "",
   });
 
-  // 1. Logic: Mencatat perubahan input
+  // IMPLEMENTASI USEEFFECT: Bersihkan pesan error otomatis setelah 3 detik
+  useEffect(() => {
+    if (!error) return; // Jika tidak ada error, diam saja
+
+    const errorTimer = setTimeout(() => {
+      setError(""); // Kosongkan error setelah waktu habis
+    }, 3000);
+
+    return () => clearTimeout(errorTimer); // Reset timer jika component dibongkar
+  }, [error]); // Terpicu kembali setiap ada teks error baru masuk
+
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setDataForm({
@@ -24,7 +34,6 @@ export default function Login() {
     });
   };
 
-  // 2. Logic: Memproses pengiriman form ke DummyJSON
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -32,12 +41,12 @@ export default function Login() {
 
     axios
       .post("https://dummyjson.com/user/login", {
-        username: dataForm.email, // Mapping email ke username API
+        username: dataForm.email,
         password: dataForm.password,
       })
       .then((response) => {
         if (response.status === 200) {
-          navigate("/"); // Ke dashboard jika sukses
+          navigate("/");
         }
       })
       .catch((err) => {
@@ -54,7 +63,6 @@ export default function Login() {
 
   return (
     <div className="w-full">
-      {/* Header Desain Luxury */}
       <h1 className="text-[32px] font-serif text-white font-bold tracking-wide mb-1">
         Login
       </h1>
@@ -62,7 +70,6 @@ export default function Login() {
         Authorized personnel only.
       </p>
 
-      {/* Menampilkan status error jika ada[cite: 20] */}
       {error && (
         <div className="bg-red-900/30 border border-red-500/50 mb-6 p-3 text-xs text-red-200 rounded flex items-center animate-pulse">
           <BsFillExclamationDiamondFill className="text-red-500 me-2 text-base" />
@@ -71,7 +78,6 @@ export default function Login() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Input Username (Mapping ke state email) */}
         <div className="space-y-2">
           <label className="text-[10px] font-bold text-[#E8B953] uppercase tracking-[0.2em] block">
             Username / Email
@@ -80,7 +86,7 @@ export default function Login() {
             <FaIdBadge className="absolute left-4 text-[#E8B953] text-lg" />
             <input
               type="text"
-              name="email" // HARUS 'email' agar terbaca handleChange[cite: 20]
+              name="email"
               value={dataForm.email}
               onChange={handleChange}
               placeholder="Enter username..."
@@ -90,7 +96,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Input Password */}
         <div className="space-y-2">
           <label className="text-[10px] font-bold text-[#E8B953] uppercase tracking-[0.2em] block">
             Password
@@ -99,14 +104,14 @@ export default function Login() {
             <FaLock className="absolute left-4 text-[#E8B953] text-lg" />
             <input
               type={showPassword ? "text" : "password"}
-              name="password" // HARUS 'password'[cite: 20]
+              name="password"
               value={dataForm.password}
               onChange={handleChange}
               placeholder="••••••••"
               className="w-full bg-transparent border border-slate-700 text-slate-200 rounded-sm py-3 pl-12 pr-12 focus:outline-none focus:border-[#E8B953] transition-all placeholder:text-slate-600 text-sm"
               required
             />
-            <button 
+            <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-4 text-slate-500 hover:text-[#E8B953]"
@@ -117,12 +122,14 @@ export default function Login() {
         </div>
 
         <div className="pt-2">
-          <a href="/forgot" className="text-[11px] font-bold text-[#E8B953] hover:underline tracking-wider">
+          <a
+            href="/forgot"
+            className="text-[11px] font-bold text-[#E8B953] hover:underline tracking-wider"
+          >
             FORGOT PASSWORD?
           </a>
         </div>
 
-        {/* Tombol Login dengan State Loading[cite: 20] */}
         <button
           type="submit"
           disabled={loading}

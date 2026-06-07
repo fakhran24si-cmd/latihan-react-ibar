@@ -1,15 +1,36 @@
-// File: src/pages/main/OrderDetail.jsx
-import React from "react";
+import React, { useEffect, useRef } from "react"; // Tambahkan useEffect dan useRef
 import { useParams, useNavigate } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 import { FaArrowLeft, FaPrint, FaRegCreditCard } from "react-icons/fa";
 import { MdOutlineBedroomParent, MdOutlineDateRange } from "react-icons/md";
 
 export default function OrderDetail() {
-  const { id } = useParams(); // Menangkap ID dari URL (misal: ORD-001)
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  // MOCK DATA: Karena belum ada API, kita buat data dummy berdasarkan ID yang diklik
+  // IMPLEMENTASI USEREF: Menandai area elemen struk pembayaran saja
+  const invoiceAreaRef = useRef(null);
+
+  // IMPLEMENTASI USEEFFECT: Mengubah judul tab browser sesuai reservasi yang aktif
+  useEffect(() => {
+    document.title = `Detail Reservasi: ${id} | Marline CRM`;
+
+    return () => {
+      document.title = "Marline Hotel CRM"; // Kembalikan ke judul default saat tab ditinggalkan
+    };
+  }, [id]); // Berjalan ulang jika ID reservasi berubah
+
+  // Fungsi Cetak Khusus Area Struk Pembayaran
+  const handlePrintInvoice = () => {
+    const printContents = invoiceAreaRef.current.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents; // Ganti layar dengan isi struk saja
+    window.print(); // Panggil jendela print bawaan OS
+    document.body.innerHTML = originalContents; // Kembalikan struktur web asli
+    window.location.reload(); // Segarkan status aplikasi
+  };
+
   const orderData = {
     no: id,
     customerName: "Fakhran Ikbaar",
@@ -20,14 +41,13 @@ export default function OrderDetail() {
     checkOut: "17 May 2026",
     pricePerNight: 5200000,
     nights: 2,
-    status: id.endsWith("2") || id.endsWith("4") ? "Pending" : "Success", // Simulasi status
+    status: id.endsWith("2") || id.endsWith("4") ? "Pending" : "Success",
   };
 
   const total = orderData.pricePerNight * orderData.nights;
 
   return (
     <div className="p-4">
-      {/* Menggunakan komponen PageHeader Anda */}
       <PageHeader
         title={`Reservation Detail: ${id}`}
         breadcrumb={["Dashboard", "Reservations", id]}
@@ -39,16 +59,19 @@ export default function OrderDetail() {
           >
             <FaArrowLeft className="mr-2" /> Back
           </button>
-          <button className="flex items-center bg-[#0B0F19] text-[#E8B953] px-4 py-2 rounded-xl font-bold text-sm border border-[#E8B953]/30 hover:bg-slate-800 transition-all shadow-md">
+
+          {/* Tambahkan onClick handler cetak di bawah ini */}
+          <button
+            onClick={handlePrintInvoice}
+            className="flex items-center bg-[#0B0F19] text-[#E8B953] px-4 py-2 rounded-xl font-bold text-sm border border-[#E8B953]/30 hover:bg-slate-800 transition-all shadow-md"
+          >
             <FaPrint className="mr-2" /> Print Invoice
           </button>
         </div>
       </PageHeader>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-        {/* KOLOM KIRI: Informasi Utama (Mengambil porsi 2/3) */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Card Guest Info */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <h3 className="text-lg font-serif font-bold text-[#0B0F19] border-b pb-3 mb-4">
               Guest Information
@@ -77,7 +100,6 @@ export default function OrderDetail() {
             </div>
           </div>
 
-          {/* Card Room Details */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <h3 className="text-lg font-serif font-bold text-[#0B0F19] border-b pb-3 mb-4">
               Stay Details
@@ -115,8 +137,8 @@ export default function OrderDetail() {
           </div>
         </div>
 
-        {/* KOLOM KANAN: Ringkasan Biaya */}
-        <div>
+        {/* Pasang ref={invoiceAreaRef} di container yang mau di-print */}
+        <div ref={invoiceAreaRef}>
           <div className="bg-[#0B0F19] rounded-2xl p-6 shadow-lg text-white border border-slate-800 sticky top-24">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-serif font-bold text-[#E8B953]">
